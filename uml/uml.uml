@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_BULc8IXNEeufT999_0dHGg" name="uml">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_Ba3TwIXNEeufT999_0dHGg">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Class" xmi:id="_Y1DGQIXNEeufT999_0dHGg" name="FogDevice">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_FfZDsIXOEeufT999_0dHGg" name="application" type="_gd6VEIXNEeufT999_0dHGg" association="_FfS9EIXOEeufT999_0dHGg">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_FfZqwIXOEeufT999_0dHGg"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_FfaR0IXOEeufT999_0dHGg" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_gd6VEIXNEeufT999_0dHGg" name="Application"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_lig3YIXNEeufT999_0dHGg" name="Sensor"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_xad80IXNEeufT999_0dHGg" name="Actuator"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_FfS9EIXOEeufT999_0dHGg" memberEnd="_FfZDsIXOEeufT999_0dHGg _FfaR0YXOEeufT999_0dHGg">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_FfXOgIXOEeufT999_0dHGg" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_FfX1kIXOEeufT999_0dHGg" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_FfaR0YXOEeufT999_0dHGg" name="fogdevice" type="_Y1DGQIXNEeufT999_0dHGg" association="_FfS9EIXOEeufT999_0dHGg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Interaction" xmi:id="_BTmmcIXTEeufT999_0dHGg" name="Interaction7" classifierBehavior="_2ZZmAIa_EeufT999_0dHGg">
+    <ownedBehavior xmi:type="uml:Activity" xmi:id="_2ZZmAIa_EeufT999_0dHGg" name="Activity11" node="_3unsgIa_EeufT999_0dHGg _ltbigIbAEeufT999_0dHGg _oqDrsIbAEeufT999_0dHGg">
+      <edge xmi:type="uml:ControlFlow" xmi:id="_lt3nYIbAEeufT999_0dHGg" target="_ltbigIbAEeufT999_0dHGg" source="_3unsgIa_EeufT999_0dHGg"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="_rzWX4IbAEeufT999_0dHGg" name="create" target="_oqDrsIbAEeufT999_0dHGg" source="_3unsgIa_EeufT999_0dHGg"/>
+      <node xmi:type="uml:InitialNode" xmi:id="_3unsgIa_EeufT999_0dHGg" name="HomeCareFog" outgoing="_lt3nYIbAEeufT999_0dHGg _rzWX4IbAEeufT999_0dHGg"/>
+      <node xmi:type="uml:CallOperationAction" xmi:id="_ltbigIbAEeufT999_0dHGg" name="CallOperationAction3" incoming="_lt3nYIbAEeufT999_0dHGg"/>
+      <node xmi:type="uml:CreateObjectAction" xmi:id="_oqDrsIbAEeufT999_0dHGg" name="createTopology" incoming="_rzWX4IbAEeufT999_0dHGg">
+        <result xmi:type="uml:OutputPin" xmi:id="_oqGH8IbAEeufT999_0dHGg" name="result">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_oqGH8YbAEeufT999_0dHGg" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_oqGH8obAEeufT999_0dHGg" value="1"/>
+        </result>
+      </node>
+    </ownedBehavior>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="_XeD2cIXTEeufT999_0dHGg" name="Application" coveredBy="_YTWDUIa9EeufT999_0dHGg _YTPVoIa9EeufT999_0dHGg _YTWqYIa9EeufT999_0dHGg"/>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="_g0OUkIXTEeufT999_0dHGg" name="Topology" coveredBy="_auRNoIa9EeufT999_0dHGg _auP_gIa9EeufT999_0dHGg _auRNoYa9EeufT999_0dHGg"/>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="_kUxqMIXTEeufT999_0dHGg" name="Placement"/>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="_fsBhEIa9EeufT999_0dHGg" name="Mapping"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_YTWDUIa9EeufT999_0dHGg" name="ActionExecutionSpecification4Start" covered="_XeD2cIXTEeufT999_0dHGg" execution="_YTPVoIa9EeufT999_0dHGg"/>
+    <fragment xmi:type="uml:ActionExecutionSpecification" xmi:id="_YTPVoIa9EeufT999_0dHGg" name="ActionExecutionSpecification4" covered="_XeD2cIXTEeufT999_0dHGg" finish="_YTWqYIa9EeufT999_0dHGg" start="_YTWDUIa9EeufT999_0dHGg"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_auRNoIa9EeufT999_0dHGg" name="ActionExecutionSpecification7Start" covered="_g0OUkIXTEeufT999_0dHGg" execution="_auP_gIa9EeufT999_0dHGg"/>
+    <fragment xmi:type="uml:ActionExecutionSpecification" xmi:id="_auP_gIa9EeufT999_0dHGg" name="ActionExecutionSpecification7" covered="_g0OUkIXTEeufT999_0dHGg" finish="_auRNoYa9EeufT999_0dHGg" start="_auRNoIa9EeufT999_0dHGg"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_auRNoYa9EeufT999_0dHGg" name="ActionExecutionSpecification7Finish" covered="_g0OUkIXTEeufT999_0dHGg" execution="_auP_gIa9EeufT999_0dHGg"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_YTWqYIa9EeufT999_0dHGg" name="ActionExecutionSpecification4Finish" covered="_XeD2cIXTEeufT999_0dHGg" execution="_YTPVoIa9EeufT999_0dHGg"/>
+  </packagedElement>
+</uml:Model>
