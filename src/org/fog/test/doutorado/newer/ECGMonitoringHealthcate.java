@@ -344,9 +344,9 @@ public class ECGMonitoringHealthcate {
 ////		application.addAppModule("BloodPressureModule", 16, 500, 800, 300);
 ////		application.addAppModule("GlucometerModule", 16, 500, 800, 300);
 //		application.addAppModule("EmergencyCallerModule", 16, 500, 800, 300);
-//		application.addAppModule("RoutineServicesModule", 64, 1500, 2000, 2000);
 //		application.addAppModule("EmergencyModule", 32, 1000, 2000, 1500);
 //		application.addAppModule("SmartHealthModule", 128, 2000, 4000, 3500);
+//		application.addAppModule("RoutineServicesModule", 64, 1500, 2000, 2000);
 //		application.addAppModule("HistoricalDataModule", 256, 2000, 4000, 3500);
 //		
 //		

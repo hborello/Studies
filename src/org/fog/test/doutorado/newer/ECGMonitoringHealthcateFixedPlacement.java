@@ -67,8 +67,8 @@ public class ECGMonitoringHealthcateFixedPlacement {
 			createFogDevices(broker.getId(), appId);
 
 //			Printing topology
-			Utils2.printTopology(fogDevices, sensors, actuators);
-			Utils2.topologyToJson(fogDevices, sensors, actuators);
+//			Utils2.printTopology(fogDevices, sensors, actuators);
+//			Utils2.topologyToJson(fogDevices, sensors, actuators);
 			
 //			Creating applicatacion
 			Application application = createApplication(appId, broker.getId());
@@ -85,11 +85,11 @@ public class ECGMonitoringHealthcateFixedPlacement {
 			
 //			start - placing modules manually
 			
-			
-//			3	6	5		area-0
-//			4	7	6		ecg-0-0
-//			3	10	5		area-1
-//			4	11	10		ecg-1-0
+//			devices
+//			area-0
+//			ecg-0-0
+//			area-1
+//			ecg-1-0
 			
 			moduleMapping.addModuleToDevice("ECGModule", "ecg-0-0");
 			moduleMapping.addModuleToDevice("ECGModule", "ecg-1-0");
@@ -103,6 +103,14 @@ public class ECGMonitoringHealthcateFixedPlacement {
 			moduleMapping.addModuleToDevice("EmergencyCallerModule", "ec-0-0");
 			moduleMapping.addModuleToDevice("EmergencyCallerModule", "ec-1-0");
 			
+			moduleMapping.addModuleToDevice("BloodPressureModule", "bp-0-0");
+			moduleMapping.addModuleToDevice("BloodPressureModule", "bp-1-0");
+			
+			moduleMapping.addModuleToDevice("GlucometerModule", "g-0-0");
+			moduleMapping.addModuleToDevice("GlucometerModule", "g-1-0");
+			
+			moduleMapping.addModuleToDevice("RoutineServicesModule", "proxy-server");
+			moduleMapping.addModuleToDevice("HistoricalDataModule", "cloud");
 			
 			controller.submitApplication(application, new ModulePlacementMapping(fogDevices, application, moduleMapping));
 			
@@ -164,22 +172,22 @@ public class ECGMonitoringHealthcateFixedPlacement {
 			fogDevices.add(endDevice);
 		}
 
-//		// loop to create Blood Pressure devices
-//		for (int i = 0; i < numOfBP; i++) {
-//			String mobileId = "bp-" + id + "-" + i;
-//			FogDevice endDevice = addBPDevice(mobileId, userId, appId, area.getId());
-//			endDevice.setUplinkLatency(level4);
-//			fogDevices.add(endDevice);
-//		}
-//
-//		// loop to create Glucometer devices
-//		for (int i = 0; i < numOfG; i++) {
-//			String mobileId = "g-" + id + "-" + i;
-//			FogDevice endDevice = addGDevice(mobileId, userId, appId, area.getId());
-//			endDevice.setUplinkLatency(level4);
-//			fogDevices.add(endDevice);
-//		}
-//
+		// loop to create Blood Pressure devices
+		for (int i = 0; i < numOfBP; i++) {
+			String mobileId = "bp-" + id + "-" + i;
+			FogDevice endDevice = addBPDevice(mobileId, userId, appId, area.getId());
+			endDevice.setUplinkLatency(level4);
+			fogDevices.add(endDevice);
+		}
+
+		// loop to create Glucometer devices
+		for (int i = 0; i < numOfG; i++) {
+			String mobileId = "g-" + id + "-" + i;
+			FogDevice endDevice = addGDevice(mobileId, userId, appId, area.getId());
+			endDevice.setUplinkLatency(level4);
+			fogDevices.add(endDevice);
+		}
+
 		// loop to create Emergency Call devices
 		for (int i = 0; i < numOfCE; i++) {
 			String mobileId = "ec-" + id + "-" + i;
@@ -228,11 +236,11 @@ public class ECGMonitoringHealthcateFixedPlacement {
 		bp.setParentId(parentId);
 
 		// creating sensor Blood Pressure
-		Sensor sensor = new Sensor("s-" + id, "bpSensor", userId, appId, new DeterministicDistribution(10)); 
+		Sensor sensor = new Sensor("s-" + id, "BPSensor", userId, appId, new DeterministicDistribution(10)); 
 		sensors.add(sensor);
 
 		// creating alarm Blood Pressure
-		Actuator actuator = new Actuator("a-" + id, userId, appId, "bpAlarm");
+		Actuator actuator = new Actuator("a-" + id, userId, appId, "BPAlarm");
 		actuators.add(actuator);
 
 		sensor.setGatewayDeviceId(bp.getId());
@@ -250,11 +258,11 @@ public class ECGMonitoringHealthcateFixedPlacement {
 		glucometer.setParentId(parentId);
 
 		// creating sensor ECG
-		Sensor sensor = new Sensor("s-" + id, "gSensor", userId, appId, new DeterministicDistribution(10)); 
+		Sensor sensor = new Sensor("s-" + id, "GSensor", userId, appId, new DeterministicDistribution(10)); 
 		sensors.add(sensor);
 
 		// creating monitor ECG
-		Actuator actuator = new Actuator("a-" + id, userId, appId, "gAlarm");
+		Actuator actuator = new Actuator("a-" + id, userId, appId, "GAlarm");
 		actuators.add(actuator);
 
 		sensor.setGatewayDeviceId(glucometer.getId());
@@ -291,39 +299,80 @@ public class ECGMonitoringHealthcateFixedPlacement {
 		/*
 		 * Adding modules (vertices) to the application model (directed graph)
 		 */
-//		Parameters:
-//			moduleName
-//			ram
-//			mips
-//			size
-//			bw
+		// Parameters: (moduleName, ram, mips, size, bw)
+		// ECG Application
 		application.addAppModule("ECGModule", 32, 1000, 2000, 600);
+		//Middle and End Application
 		application.addAppModule("SmartHealthModule", 32, 2000, 4000, 3500);
 		application.addAppModule("EmergencyModule", 32, 1000, 2000, 1500);
 		application.addAppModule("EmergencyCallerModule", 16, 500, 800, 300);
+		// Blood Pressure Application
+		application.addAppModule("BloodPressureModule", 16, 500, 800, 300);
+		// Glucose meter Application
+		application.addAppModule("GlucometerModule", 16, 500, 800, 300);
+		// Historical data to Routine Services
+		application.addAppModule("RoutineServicesModule", 128, 1500, 2000, 2000);
+		application.addAppModule("HistoricalDataModule", 256, 2000, 4000, 3500);
 		
-//		first flow
+		/*
+		 * Connecting the application modules (vertices) in the application model (directed graph) with edges
+		 */
+		// Parameters: (source, destination, tupleCpuLength, tupleNwLength, tupleType, direction, edgeType)
+		// first flow (ecg application)
 		application.addAppEdge("ECGSensor", "ECGModule", 100, 200, "ECGSensor", Tuple.UP, AppEdge.SENSOR);
 		application.addAppEdge("ECGModule", "ECGMonitor", 100, 200, "ECGActuator", Tuple.DOWN, AppEdge.ACTUATOR);
-		
-//		second flow (begin with first line of first flow
 		application.addAppEdge("ECGModule", "SmartHealthModule", 6000, 600, "ECGData", Tuple.UP, AppEdge.MODULE);
+		
+		// second flow (begin with first line of first flow) - middle and end application
 		application.addAppEdge("SmartHealthModule", "EmergencyModule", 1000, 50, "EmergencyData", Tuple.UP, AppEdge.MODULE);
 		application.addAppEdge("EmergencyModule", "EmergencyCallerModule", 1000, 50, "ECData", Tuple.DOWN, AppEdge.MODULE);
 		application.addAppEdge("EmergencyCallerModule", "DisplayAlarm", 100, 50, "CallerActuator", Tuple.DOWN, AppEdge.ACTUATOR);
-				
-//		first flow
+		
+		// third flow (blood pressure)
+		application.addAppEdge("BPSensor", "BloodPressureModule", 50, 100, "BPSensor", Tuple.UP, AppEdge.MODULE);
+		application.addAppEdge("BloodPressureModule", "SmartHealthModule", 3000, 300, "BPData", Tuple.UP, AppEdge.MODULE);
+		application.addAppEdge("BloodPressureModule", "BPAlarm", 100, 200, "BPActuator", Tuple.DOWN, AppEdge.ACTUATOR);
+		
+		// fourth flow (glucose meter application)
+		application.addAppEdge("GSensor", "GlucometerModule", 50, 100, "GSensor", Tuple.UP, AppEdge.MODULE);
+		application.addAppEdge("GlucometerModule", "SmartHealthModule", 3000, 300, "GData", Tuple.UP, AppEdge.MODULE);
+		application.addAppEdge("GlucometerModule", "GAlarm", 100, 200, "GActuator", Tuple.DOWN, AppEdge.ACTUATOR);
+
+		// fifth flow (Historical data to Routine Services)
+		application.addAppEdge("SmartHealthModule", "RoutineServicesModule", 7000, 1000, "ServicesData", Tuple.UP, AppEdge.MODULE);
+		application.addAppEdge("RoutineServicesModule", "HistoricalDataModule", 3000, 300, "HistoricalData", Tuple.UP, AppEdge.MODULE);
+		
+		/*
+		 * Defining the input-output relationships (represented by selectivity) of the application modules. 
+		 */
+		// parameters (moduleName, inputTupleType, outputTupleType, selectivityModel)
+		// first flow (ecg application)
 		application.addTupleMapping("ECGModule", "ECGSensor", "ECGActuator", new FractionalSelectivity(0.9));
 
-//		second flow		
+		// second flow	(begin with first line of first flow) - middle and end application
 		application.addTupleMapping("ECGModule", "ECGSensor", "ECGData", new FractionalSelectivity(0.9));
 		application.addTupleMapping("SmartHealthModule", "ECGData", "EmergencyData", new FractionalSelectivity(1.0));
 		application.addTupleMapping("EmergencyModule", "EmergencyData", "ECData", new FractionalSelectivity(1.0));
 		application.addTupleMapping("EmergencyCallerModule", "ECData", "CallerActuator", new FractionalSelectivity(0.8));
 		
+		// third flow (blood pressure)
+		application.addTupleMapping("BloodPressureModule", "BPSensor", "BPActuator", new FractionalSelectivity(0.9));
+
+		// fourth flow (blood pressure)
+		application.addTupleMapping("GlucometerModule", "GSensor", "GActuator", new FractionalSelectivity(0.9));
+		
+		// fifth flow (Historical data to Routine Services)
+		application.addTupleMapping("SmartHealthModule", "ECGData", "ServicesData", new FractionalSelectivity(1.0));
+		application.addTupleMapping("SmartHealthModule", "BPData", "ServicesData", new FractionalSelectivity(1.0));
+		application.addTupleMapping("SmartHealthModule", "GData", "ServicesData", new FractionalSelectivity(1.0));
+		application.addTupleMapping("RoutineServicesModule", "ServicesData", "HistoricalData", new FractionalSelectivity(1.0));
+
 		final AppLoop loop1 = new AppLoop(new ArrayList<String>(){{add("ECGSensor");add("ECGModule");add("ECGMonitor");}});
 		final AppLoop loop2 = new AppLoop(new ArrayList<String>(){{add("SmartHealthModule");add("EmergencyModule");add("EmergencyCallerModule");add("DisplayAlarm");}});
-		List<AppLoop> loops = new ArrayList<AppLoop>(){{add(loop1);add(loop2);}};
+		final AppLoop loop3 = new AppLoop(new ArrayList<String>(){{add("BPSensor");add("BloodPressureModule");add("BPAlarm");}});
+		final AppLoop loop4 = new AppLoop(new ArrayList<String>(){{add("GSensor");add("GlucometerModule");add("GAlarm");}});
+		final AppLoop loop5 = new AppLoop(new ArrayList<String>(){{add("SmartHealthModule");add("RoutineServicesModule");add("HistoricalDataModule");}});
+		List<AppLoop> loops = new ArrayList<AppLoop>(){{add(loop1);add(loop2);add(loop3);add(loop4);add(loop5);}};
 				
 		application.setLoops(loops);
 		return application;

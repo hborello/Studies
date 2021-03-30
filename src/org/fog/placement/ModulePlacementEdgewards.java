@@ -154,6 +154,7 @@ public class ModulePlacementEdgewards extends ModulePlacement{
 			 */
 			for(String sensor : sensorsAssociated.keySet()){					// calculando taxa de tupla com base no valor de intervalo de sensor (sensorInterval)
 				for(AppEdge edge : getApplication().getEdges()){
+					System.out.println("edge: " + edge + ", sensorsAssociated * getRateOfSensor: " + sensorsAssociated.get(sensor)+" * "+getRateOfSensor(sensor));
 					if(edge.getSource().equals(sensor)){
 						appEdgeToRate.put(edge, sensorsAssociated.get(sensor)*getRateOfSensor(sensor));
 					}
@@ -239,8 +240,9 @@ public class ModulePlacementEdgewards extends ModulePlacement{
 //						System.out.println("edge.getDestination(): "+edge.getDestination() + " - moduleName: "+moduleName);
 						if(edge.getDestination().equals(moduleName)){
 //							System.out.println("appEdgeToRate: "+appEdgeToRate.get(edge));
-//							double rate = (appEdgeToRate.get(edge)!=null)?appEdgeToRate.get(edge):0.0;
-							double rate = appEdgeToRate.get(edge);
+							double rate = (appEdgeToRate.get(edge)!=null)?appEdgeToRate.get(edge):0.0;
+//							double rate = appEdgeToRate.get(edge);
+							System.out.println("rate: " + rate);
 							totalCpuLoad += rate*edge.getTupleCpuLength();
 						}
 					}

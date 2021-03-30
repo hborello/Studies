@@ -85,7 +85,7 @@ public class Sensor extends SimEntity{
 			if(edge.getSource().equals(getTupleType()))
 				_edge = edge;
 		}
-//		System.out.println("_edge.getTupleCpuLength():"+_edge.getTupleCpuLength());
+//		System.out.println(_edge.getSource() +" _edge.getTupleCpuLength():"+_edge.getTupleCpuLength());
 		long cpuLength = (long) _edge.getTupleCpuLength();
 		long nwLength = (long) _edge.getTupleNwLength();
 		
@@ -97,10 +97,12 @@ public class Sensor extends SimEntity{
 		tuple.setDestModuleName(_edge.getDestination());
 		tuple.setSrcModuleName(getSensorName());
 		Logger.debug(getName(), "Sending tuple with tupleId = "+tuple.getCloudletId());
+//		System.out.println(getName() + " - Sending tuple with tupleId = "+tuple.getCloudletId());
 
 		int actualTupleId = updateTimings(getSensorName(), tuple.getDestModuleName());
 		tuple.setActualTupleId(actualTupleId);
 		
+//		System.out.println(gatewayDeviceId +" - "+ getLatency()+" - "+ FogEvents.TUPLE_ARRIVAL+" - "+tuple);
 		send(gatewayDeviceId, getLatency(), FogEvents.TUPLE_ARRIVAL,tuple);
 	}
 	
