@@ -77,7 +77,7 @@ public class HomeCareFog1 {
 			application.setUserId(broker.getId());
 			
 			createFogDevices(broker.getId(), appId);
-//			Utils2.topologyToJson(fogDevices, sensors, actuators);
+			Utils2.topologyToJson(fogDevices, sensors, actuators);
 //			Utils2.printTopology(fogDevices, sensors, actuators);
 			
 			Controller controller = null;

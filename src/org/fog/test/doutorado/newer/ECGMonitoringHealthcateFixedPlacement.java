@@ -20,7 +20,6 @@ import org.fog.application.selectivity.FractionalSelectivity;
 import org.fog.entities.Tuple;
 import org.fog.placement.Controller;
 import org.fog.placement.ModuleMapping;
-import org.fog.placement.ModulePlacementEdgewards;
 import org.fog.placement.ModulePlacementMapping;
 
 
@@ -46,7 +45,7 @@ public class ECGMonitoringHealthcateFixedPlacement {
 	static double level_sensor = 0.5;
 	static double level_actuator = 0.1;
 
-	private static boolean CLOUD = false;
+//	private static boolean CLOUD = false;
 
 	public static void main(String[] args) {
 
@@ -70,7 +69,7 @@ public class ECGMonitoringHealthcateFixedPlacement {
 //			Utils2.printTopology(fogDevices, sensors, actuators);
 //			Utils2.topologyToJson(fogDevices, sensors, actuators);
 			
-//			Creating applicatacion
+//			Creating application
 			Application application = createApplication(appId, broker.getId());
 			application.setUserId(broker.getId());
 			
@@ -84,12 +83,6 @@ public class ECGMonitoringHealthcateFixedPlacement {
 					actuators);
 			
 //			start - placing modules manually
-			
-//			devices
-//			area-0
-//			ecg-0-0
-//			area-1
-//			ecg-1-0
 			
 			moduleMapping.addModuleToDevice("ECGModule", "ecg-0-0");
 			moduleMapping.addModuleToDevice("ECGModule", "ecg-1-0");
@@ -320,8 +313,8 @@ public class ECGMonitoringHealthcateFixedPlacement {
 		// Parameters: (source, destination, tupleCpuLength, tupleNwLength, tupleType, direction, edgeType)
 		// first flow (ecg application)
 		application.addAppEdge("ECGSensor", "ECGModule", 100, 200, "ECGSensor", Tuple.UP, AppEdge.SENSOR);
-		application.addAppEdge("ECGModule", "ECGMonitor", 100, 200, "ECGActuator", Tuple.DOWN, AppEdge.ACTUATOR);
 		application.addAppEdge("ECGModule", "SmartHealthModule", 6000, 600, "ECGData", Tuple.UP, AppEdge.MODULE);
+		application.addAppEdge("ECGModule", "ECGMonitor", 100, 200, "ECGActuator", Tuple.DOWN, AppEdge.ACTUATOR);
 		
 		// second flow (begin with first line of first flow) - middle and end application
 		application.addAppEdge("SmartHealthModule", "EmergencyModule", 1000, 50, "EmergencyData", Tuple.UP, AppEdge.MODULE);
@@ -329,12 +322,12 @@ public class ECGMonitoringHealthcateFixedPlacement {
 		application.addAppEdge("EmergencyCallerModule", "DisplayAlarm", 100, 50, "CallerActuator", Tuple.DOWN, AppEdge.ACTUATOR);
 		
 		// third flow (blood pressure)
-		application.addAppEdge("BPSensor", "BloodPressureModule", 50, 100, "BPSensor", Tuple.UP, AppEdge.MODULE);
+		application.addAppEdge("BPSensor", "BloodPressureModule", 50, 100, "BPSensor", Tuple.UP, AppEdge.SENSOR);
 		application.addAppEdge("BloodPressureModule", "SmartHealthModule", 3000, 300, "BPData", Tuple.UP, AppEdge.MODULE);
 		application.addAppEdge("BloodPressureModule", "BPAlarm", 100, 200, "BPActuator", Tuple.DOWN, AppEdge.ACTUATOR);
 		
 		// fourth flow (glucose meter application)
-		application.addAppEdge("GSensor", "GlucometerModule", 50, 100, "GSensor", Tuple.UP, AppEdge.MODULE);
+		application.addAppEdge("GSensor", "GlucometerModule", 50, 100, "GSensor", Tuple.UP, AppEdge.SENSOR);
 		application.addAppEdge("GlucometerModule", "SmartHealthModule", 3000, 300, "GData", Tuple.UP, AppEdge.MODULE);
 		application.addAppEdge("GlucometerModule", "GAlarm", 100, 200, "GActuator", Tuple.DOWN, AppEdge.ACTUATOR);
 
