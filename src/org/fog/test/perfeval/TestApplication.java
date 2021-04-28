@@ -234,22 +234,22 @@ public class TestApplication {
 		application.addTupleMapping("clientModule", "ResultData", "Response", new FractionalSelectivity(1.0)); 
 	
 		
-		for(int id:idOfEndDevices)
-		{
-			Map<String,Double>moduleDeadline = new HashMap<String,Double>();
-			moduleDeadline.put("mainModule", getvalue(3.00, 5.00));
-			Map<String,Integer>moduleAddMips = new HashMap<String,Integer>();
-			moduleAddMips.put("mainModule", getvalue(0, 500));
-			deadlineInfo.put(id, moduleDeadline);
-			additionalMipsInfo.put(id,moduleAddMips);
-			
-		}
+//		for(int id:idOfEndDevices)
+//		{
+//			Map<String,Double>moduleDeadline = new HashMap<String,Double>();
+//			moduleDeadline.put("mainModule", getvalue(3.00, 5.00));
+//			Map<String,Integer>moduleAddMips = new HashMap<String,Integer>();
+//			moduleAddMips.put("mainModule", getvalue(0, 500));
+//			deadlineInfo.put(id, moduleDeadline);
+//			additionalMipsInfo.put(id,moduleAddMips);
+//			
+//		}
 		
 		final AppLoop loop1 = new AppLoop(new ArrayList<String>(){{add("IoTSensor");add("clientModule");add("mainModule");add("clientModule");add("IoTActuator");}});
 		List<AppLoop> loops = new ArrayList<AppLoop>(){{add(loop1);}};
 		application.setLoops(loops);
-		application.setDeadlineInfo(deadlineInfo);
-		application.setAdditionalMipsInfo(additionalMipsInfo);
+//		application.setDeadlineInfo(deadlineInfo);
+//		application.setAdditionalMipsInfo(additionalMipsInfo);
 		
 		return application;
 	}

@@ -21,6 +21,8 @@ import org.fog.entities.Tuple;
 import org.fog.placement.Controller;
 import org.fog.placement.ModuleMapping;
 import org.fog.placement.ModulePlacementEdgewards;
+import org.fog.placement.ModulePlacementEdgewardsMOD;
+import org.fog.placement.ModulePlacementFogDevices;
 import org.fog.placement.ModulePlacementMapping;
 
 
@@ -68,7 +70,9 @@ public class ECGMonitoringHealthcate {
 
 //			Printing topology
 //			Utils2.printTopology(fogDevices, sensors, actuators);
-			Utils2.topologyToJson(fogDevices, sensors, actuators);
+//			Utils2.topologyToJson(fogDevices, sensors, actuators);
+//			
+			
 			
 //			Creating application
 			Application application = createApplication(appId, broker.getId());
@@ -79,7 +83,7 @@ public class ECGMonitoringHealthcate {
 			ModuleMapping moduleMapping = ModuleMapping.createModuleMapping(); // initializing a module mapping
 			
 			moduleMapping.addModuleToDevice("HistoricalDataModule", "cloud"); // fixing instances of User Interface module in the Cloud
-			moduleMapping.addModuleToDevice("RoutineServicesModule", "proxy-server"); 
+//			moduleMapping.addModuleToDevice("RoutineServicesModule", "proxy-server"); 
 			
 //			moduleMapping.addModuleToDevice("SmartHealthModule", "area-0");
 //			moduleMapping.addModuleToDevice("SmartHealthModule", "area-1");
@@ -99,12 +103,11 @@ public class ECGMonitoringHealthcate {
 //				}
 //			}
 			
-			controller = new Controller("master-controller", fogDevices, sensors, 
-					actuators);
+			controller = new Controller("master-controller", fogDevices, sensors, actuators);
 						
 			controller.submitApplication(application, 
 					(CLOUD)?(new ModulePlacementMapping(fogDevices, application, moduleMapping))
-							:(new ModulePlacementEdgewards(fogDevices, sensors, actuators, application, moduleMapping)));
+							:(new ModulePlacementFogDevices(fogDevices, sensors, actuators, application, moduleMapping)));
 			
 			TimeKeeper.getInstance().setSimulationStartTime(Calendar.getInstance().getTimeInMillis());
 			
@@ -224,14 +227,12 @@ public class ECGMonitoringHealthcate {
 		// creating sensor Blood Pressure
 		Sensor sensor = new Sensor("s-" + id, "BPSensor", userId, appId, new DeterministicDistribution(10)); 
 		sensors.add(sensor);
+		sensor.setGatewayDeviceId(bp.getId());
+		sensor.setLatency(level_sensor); 
 
 		// creating alarm Blood Pressure
 		Actuator actuator = new Actuator("a-" + id, userId, appId, "BPAlarm");
 		actuators.add(actuator);
-
-		sensor.setGatewayDeviceId(bp.getId());
-		sensor.setLatency(level_sensor); 
-
 		actuator.setGatewayDeviceId(bp.getId());
 		actuator.setLatency(level_actuator);
 
@@ -353,13 +354,15 @@ public class ECGMonitoringHealthcate {
 		application.addTupleMapping("SmartHealthModule", "GData", "ServicesData", new FractionalSelectivity(1.0));
 		application.addTupleMapping("RoutineServicesModule", "ServicesData", "HistoricalData", new FractionalSelectivity(1.0));
 
-		final AppLoop loop1 = new AppLoop(new ArrayList<String>(){{add("ECGSensor");add("ECGModule");add("ECGMonitor");}});
-		final AppLoop loop2 = new AppLoop(new ArrayList<String>(){{add("SmartHealthModule");add("EmergencyModule");add("EmergencyCallerModule");add("DisplayAlarm");}});
-		final AppLoop loop3 = new AppLoop(new ArrayList<String>(){{add("BPSensor");add("BloodPressureModule");add("BPAlarm");}});
-		final AppLoop loop4 = new AppLoop(new ArrayList<String>(){{add("GSensor");add("GlucometerModule");add("GAlarm");}});
-		final AppLoop loop5 = new AppLoop(new ArrayList<String>(){{add("SmartHealthModule");add("RoutineServicesModule");add("HistoricalDataModule");}});
-		List<AppLoop> loops = new ArrayList<AppLoop>(){{add(loop1);add(loop2);add(loop3);add(loop4);add(loop5);}};
-				
+		final AppLoop loop1 = new AppLoop(new ArrayList<String>(){{add("ECGSensor");add("ECGModule");}});
+//		final AppLoop loop2 = new AppLoop(new ArrayList<String>(){{add("SmartHealthModule");add("EmergencyModule");add("EmergencyCallerModule");add("DisplayAlarm");}});
+//		final AppLoop loop3 = new AppLoop(new ArrayList<String>(){{add("BPSensor");add("BloodPressureModule");add("BPAlarm");}});
+//		final AppLoop loop4 = new AppLoop(new ArrayList<String>(){{add("GSensor");add("GlucometerModule");add("GAlarm");}});
+//		final AppLoop loop5 = new AppLoop(new ArrayList<String>(){{add("SmartHealthModule");add("RoutineServicesModule");add("HistoricalDataModule");}});
+//		List<AppLoop> loops = new ArrayList<AppLoop>(){{add(loop1);add(loop2);add(loop3);add(loop4);add(loop5);}};
+		
+		final AppLoop loop2 = new AppLoop(new ArrayList<String>(){{add("ECGModule");add("ECGMonitor");}});
+		List<AppLoop> loops = new ArrayList<AppLoop>(){{add(loop1);add(loop2);}};
 		application.setLoops(loops);
 		return application;
 	}

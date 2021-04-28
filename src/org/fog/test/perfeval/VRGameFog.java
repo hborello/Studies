@@ -27,6 +27,7 @@ import org.fog.entities.Tuple;
 import org.fog.placement.Controller;
 import org.fog.placement.ModuleMapping;
 import org.fog.placement.ModulePlacementEdgewards;
+import org.fog.placement.ModulePlacementFogDevices;
 import org.fog.placement.ModulePlacementMapping;
 import org.fog.policy.AppModuleAllocationPolicy;
 import org.fog.scheduler.StreamOperatorScheduler;
@@ -100,7 +101,7 @@ public class VRGameFog {
 			
 			controller.submitApplication(application, 0, 
 					(CLOUD)?(new ModulePlacementMapping(fogDevices, application, moduleMapping))
-							:(new ModulePlacementEdgewards(fogDevices, sensors, actuators, application, moduleMapping)));
+							:(new ModulePlacementFogDevices(fogDevices, sensors, actuators, application, moduleMapping)));
 
 			TimeKeeper.getInstance().setSimulationStartTime(Calendar.getInstance().getTimeInMillis());
 

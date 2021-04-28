@@ -1,5 +1,6 @@
 package org.fog.placement;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -103,6 +104,8 @@ public class Controller extends SimEntity {
 			printPowerDetails();
 			printCostDetails();
 			printNetworkUsageDetails();
+			
+			printTimeDetails2();
 			System.exit(0);
 			break;
 			
@@ -115,7 +118,7 @@ public class Controller extends SimEntity {
 
 	private FogDevice getCloud(){
 		for(FogDevice dev : getFogDevices())
-			if(dev.getName().equals("cloud"))
+			if(dev.getName().equals("cloud") || dev.getParentId()==-1)
 				return dev;
 		return null;
 	}
@@ -170,6 +173,21 @@ public class Controller extends SimEntity {
 		}
 		
 		System.out.println("=========================================");
+	}
+	
+	private void printTimeDetails2() {
+		System.out.println("=========================================");
+		System.out.println("APPLICATION LOOP DELAYS");
+		System.out.println("=========================================");
+		
+		List<Double> loops = new ArrayList<Double>();
+		for(Integer loopId : TimeKeeper.getInstance().getLoopIdToTupleIds().keySet()){
+			System.out.print(getStringForLoopId(loopId) + "	");
+			loops.add(TimeKeeper.getInstance().getLoopIdToCurrentAverage().get(loopId));
+		}
+		System.out.println();
+		System.out.println(loops);
+		
 	}
 
 	protected void manageResources(){
